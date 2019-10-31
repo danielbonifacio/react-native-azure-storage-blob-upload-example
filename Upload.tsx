@@ -41,10 +41,11 @@ const Upload = () => {
 
   /**
    * Faz o upload dos arquivos para o Azure Blob Storage
-   * @param {import('react-native-document-picker').DocumentPickerResponse[]} files Arquivos selecionados do document picker
-   * @returns {Promise<void>}
+   * @param files Arquivos selecionados do document picker
    */
-  const uploadImages = async (files: DocumentPickerResponse[]) => {
+  const uploadImages = async (
+    files: DocumentPickerResponse[],
+  ): Promise<void> => {
     setStatus('Gerando um token SAS');
     const sas = await getSAS();
 
@@ -63,13 +64,13 @@ const Upload = () => {
       setStatus('Fazendo upload...');
       await blobService.createBlockBlob(file, `${uuidv4()}.${fileExtension}`);
     });
-    setStatus('Upload finalizado...');
+    setStatus('Upload finalizado.');
   };
 
   /**
    * Macro do processo de upload: seleciona os arquivos e faz o upload
    */
-  const handleSelectImages = async () => {
+  const handleSelectImages = async (): Promise<void> => {
     try {
       setStatus('aguardando');
       const images = await selectImages();

@@ -37,10 +37,10 @@ export const api = (): String => `https://api-ng-prd.azurewebsites.net/api`;
 
 /**
  * Gera a URL para inserção do blob
- * @param {String} account nome da conta do azure storage
- * @param {String} container nome do container
- * @param {String} blobName nome (com exetensão) do blob
- * @param {String} token query string do token
+ * @param account nome da conta do azure storage
+ * @param container nome do container
+ * @param blobName nome (com exetensão) do blob
+ * @param token query string do token
  */
 export const blob = (
   account: String,
