@@ -12,7 +12,7 @@ import {Colors} from 'react-native/Libraries/NewAppScreen';
 
 import Upload from './Upload';
 
-const App = () => {
+const App: React.FC = () => {
   return (
     <>
       <StatusBar barStyle="dark-content" />

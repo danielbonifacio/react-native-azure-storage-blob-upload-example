@@ -1,7 +1,10 @@
 import React, {useState} from 'react';
 import {Button, Text, StyleSheet, View} from 'react-native';
-import DocumentPicker from 'react-native-document-picker';
-import AzureBlobStorage from './blob';
+import DocumentPicker, {
+  DocumentPickerResponse,
+} from 'react-native-document-picker';
+
+import AzureBlobStorage from './AzureBlobStorage.class';
 
 import {uuidv4, getSAS} from './utils';
 
@@ -20,9 +23,8 @@ const Upload = () => {
    * cancele a escolha (volte). A tratativa está implementada
    * dentro do catch (ver exemplo).
    *
-   * @returns {import('react-native-document-picker').DocumentPickerResponse[]}
    */
-  const selectImages = async () => {
+  const selectImages = async (): Promise<DocumentPickerResponse[]> => {
     try {
       return DocumentPicker.pickMultiple({
         type: [DocumentPicker.types.images, DocumentPicker.types.video],
@@ -30,7 +32,7 @@ const Upload = () => {
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
         console.log('canceled');
-        return null;
+        return [];
       } else {
         throw err;
       }
@@ -42,7 +44,7 @@ const Upload = () => {
    * @param {import('react-native-document-picker').DocumentPickerResponse[]} files Arquivos selecionados do document picker
    * @returns {Promise<void>}
    */
-  const uploadImages = async files => {
+  const uploadImages = async (files: DocumentPickerResponse[]) => {
     setStatus('Gerando um token SAS');
     const sas = await getSAS();
 
@@ -52,7 +54,7 @@ const Upload = () => {
       sas,
     });
 
-    files.forEach(async file => {
+    files.forEach(async (file: DocumentPickerResponse) => {
       // recupera a extensão do arquivo
       const fileNameArray = file.name.split('.');
       const fileExtension = fileNameArray[fileNameArray.length - 1];

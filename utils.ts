@@ -1,9 +1,13 @@
+export interface AuthorizedHeader {
+  Authorization: string;
+  [key: string]: string;
+}
+
 /**
  * Retorna o header de autenticação formatado
  * @param {String} token token do usuário logado
- * @returns {Object} Header de autorização
  */
-const headerWithAuthorization = token => ({
+const headerWithAuthorization = (token: String): AuthorizedHeader => ({
   Authorization: `Bearer ${token}`,
 });
 
@@ -18,9 +22,8 @@ const getToken = () => {
 
 /**
  * Solicita a SAS a API para poder executar ações no blob storage
- * @returns {String} SAS
  */
-export const getSAS = async () => {
+export const getSAS = async (): Promise<String> => {
   return fetch(`${api()}/Auth/sasLogin`, {
     method: 'POST',
     headers: headerWithAuthorization(await getToken()),
@@ -28,10 +31,9 @@ export const getSAS = async () => {
 };
 
 /**
- * Retorna o link da API
- * @returns {String} link da API para o ambiente solicitado
+ * Retorna o link da API para o ambiente solicitado
  */
-export const api = () => `https://api-ng-prd.azurewebsites.net/api`;
+export const api = (): String => `https://api-ng-prd.azurewebsites.net/api`;
 
 /**
  * Gera a URL para inserção do blob
@@ -40,14 +42,18 @@ export const api = () => `https://api-ng-prd.azurewebsites.net/api`;
  * @param {String} blobName nome (com exetensão) do blob
  * @param {String} token query string do token
  */
-export const blob = (account, container, blobName, token) =>
+export const blob = (
+  account: String,
+  container: String,
+  blobName: String,
+  token: String,
+): String =>
   `https://${account}.blob.core.windows.net/${container}/${blobName}${token}`;
 
 /**
  * Gera um Unique ID seguindo a RFC4122 versão 4
- * @returns {String} UID
  */
-export const uuidv4 = () => {
+export const uuidv4 = (): String => {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
     // TODO: usar algo mais seguro que o Math.random, talvez o crypto
     const r = (Math.random() * 16) | 0,
